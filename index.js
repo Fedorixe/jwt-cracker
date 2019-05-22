@@ -5,6 +5,7 @@
 const crypto = require('crypto');
 const variationsStream = require('variations-stream');
 const pkg = require('./package');
+var fs = require(‘fs‘);
 
 const defaultAlphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const defaultMaxLength = 12;
@@ -41,6 +42,7 @@ const generateSignature = function(content, secret) {
 const printResult = function(startTime, attempts, result) {
   if (result) {
     console.log('SECRET FOUND:', result);
+    fs.writeFile('SECRET.txt', result);
   } else {
     console.log('SECRET NOT FOUND');
   }
