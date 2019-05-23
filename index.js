@@ -5,8 +5,7 @@
 const crypto = require('crypto');
 const variationsStream = require('variations-stream');
 const pkg = require('./package');
-var fs = require(‘fs‘);
-
+const fs = require('fs');
 const defaultAlphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const defaultMaxLength = 12;
 const token = process.argv[2];
@@ -42,9 +41,11 @@ const generateSignature = function(content, secret) {
 const printResult = function(startTime, attempts, result) {
   if (result) {
     console.log('SECRET FOUND:', result);
-    fs.writeFile('SECRET.txt', result);
+    fs.writeFileSync("log.txt", ("Secret found for " + token + ".\nTime taken (in seconds): " + ((new Date).getTime() - startTime)/1000 + ".\nAttempts: " + attempts + "."));
+    fs.writeFileSync("SECRET.txt", result);
   } else {
     console.log('SECRET NOT FOUND');
+    fs.writeFileSync("log.txt", ("Secret not found for " + token + ".\nTime taken (in seconds): " + ((new Date).getTime() - startTime)/1000 + "\nAttempts: " + attempts));
   }
   console.log('Time taken (sec):', ((new Date).getTime() - startTime)/1000);
   console.log('Attempts:', attempts);
@@ -70,5 +71,4 @@ variationsStream(alphabet, maxLength)
   .on('end', function(){
     printResult(startTime, attempts);
     process.exit(1);
-  })
-;
+  });
